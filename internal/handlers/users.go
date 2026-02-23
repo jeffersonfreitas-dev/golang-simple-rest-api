@@ -12,7 +12,7 @@ func (h Handlers) registerUserEndpoints() {
 }
 
 func (h Handlers) getAllUsers(w http.ResponseWriter, r *http.Request) {
-	users := h.useCases.GetAll()
+	users := h.userCases.GetAll()
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(users)
 }
@@ -25,7 +25,7 @@ func (h Handlers) addUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := h.useCases.Add(req)
+	id, err := h.userCases.Add(req)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(models.ErrorResponse{Reason: err.Error()})

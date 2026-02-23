@@ -4,21 +4,25 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	usescases "simple-rest-api/internal/usecases"
+	"simple-rest-api/internal/usecases/products"
+	"simple-rest-api/internal/usecases/users"
 )
 
 type Handlers struct {
-	useCases *usescases.UseCases
+	userCases    *users.UsersCase
+	productCases *products.ProductCase
 }
 
-func New(useCases *usescases.UseCases) *Handlers {
+func New(userCases *users.UsersCase, productCases *products.ProductCase) *Handlers {
 	return &Handlers{
-		useCases: useCases,
+		userCases:    userCases,
+		productCases: productCases,
 	}
 }
 
 func (h Handlers) Listen(port int) error {
 	h.registerUserEndpoints()
+	h.registerProductEndpoints()
 	slog.Info("listening on", "port", port)
 	return http.ListenAndServe(fmt.Sprintf(":%v", port), nil)
 }
